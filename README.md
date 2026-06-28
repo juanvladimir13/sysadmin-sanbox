@@ -64,3 +64,92 @@ python manage.py migrate \
 python manage.py collectstatic \
     --settings=exclusivogo_admin.settings.production
 ```
+
+
+## Deploy Bun + Hono + Postgres
+
+### Configuracion de Web Server Apache
+
+#### Habilitando modulos
+```bash
+sudo a2enmod proxy proxy_http headers
+sudo systemctl restart apache2
+```
+
+#### Halitando el firewall
+```bash
+sudo ufw allow 8001
+```
+
+#### Archivo de configuracion de proxy inverso HTTPS
+```apache
+<VirtualHost *:8001>
+    ServerAdmin juanvladimir13@gmail.com
+    ServerName bthsanjulian.website
+
+    SSLEngine on
+    SSLCertificateFile      /etc/letsencrypt/live/bthsanjulian.website/fullchain.pem
+    SSLCertificateKeyFile   /etc/letsencrypt/live/bthsanjulian.website/privkey.pem
+
+    ErrorLog ${APACHE_LOG_DIR}/registropedagogico.webapi_proxy_error.log
+    CustomLog ${APACHE_LOG_DIR}/registropedagogico.webapi_proxy_access.log combined
+
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8002/
+    ProxyPassReverse / http://127.0.0.1:8002/
+
+    <IfModule mod_headers.c>
+        Header always unset Access-Control-Allow-Origin
+        Header always unset Access-Control-Allow-Methods
+        Header always unset Access-Control-Allow-Headers
+        Header always unset Access-Control-Allow-Credentials
+
+        Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+    </IfModule>
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</VirtualHost>
+```
+
+### Web App
+#### Creacion de directorio
+```bash
+sudo mkdir -p /opt/registropedagogico.webapi
+sudo chown -R www-data:www-data /opt/registropedagogico.webapi
+sudo chmod -R 755 /opt/registropedagogico.webapi
+```
+
+#### Creacion de servicio
+```bash
+sudo touch /etc/systemd/system/registropedagogico.webapi.service
+```
+
+```ini
+[Unit]
+Description=Registro Pedagógico WebAPI
+After=network.target
+
+[Service]
+User=www-data
+WorkingDirectory=/opt/registropedagogico.webapi
+ExecStart=/opt/registropedagogico.webapi/registropedagogico.webapi
+Environment=PORT=8002
+Environment=NODE_ENV=production
+EnvironmentFile=/opt/registropedagogico.webapi/.env
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### Habilitando servicio
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable registropedagogico.webapi
+sudo systemctl start registropedagogico.webapi
+sudo systemctl status registropedagogico.webapi
+```
