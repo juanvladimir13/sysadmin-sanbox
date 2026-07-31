@@ -2,12 +2,14 @@
 Configuraciones borrador de despliegue de aplicaciones
 
 ## Latex
+```bash
 sudo add-apt-repository ppa:sunderme/texstudio
 sudo aapt-get update
 sudo apt install texlive-full
-sudo apt install texlive-base
-sudo apt install texlive-extra
-sudo apt install texlive-extra texstudio
+sudo apt install texlive-latex-base
+sudo apt install texlive-latex-extra
+sudo apt install texlive-latex-extra texstudio
+```
 
 ## Django admin
 ### Apache
