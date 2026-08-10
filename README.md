@@ -1,3 +1,20 @@
+# Estructura de un documento HTML
+
+## Pregunta
+- Crear una carpeta con su **primer nombre** _(utilizar el alfabeto ingles)_
+- Ingresar a la carpeta creada y crear el archivo **index.html**
+- Crear el archivo **javascript** con su **primer apellido** _(utilizar el alfabeto ingles)_
+- Abrir **VSCode** en la carpeta actual
+- Crear la estructura de un _documento HTML_ en el archivo **index.html**
+- Mostrar el archivo HTML en **Google Chrome**
+
+# Contador de Likes
+## Pregunta
+- Agregar una etiqueta **h3** para mostrar los datos, utilizar como `id` su **primer nombre** _(utilizar el alfabeto ingles)_
+- Agregar una etiqueta **button** para ejecutar el contador, utilizar como `id` su **primer apellido** _(utilizar el alfabeto ingles)_
+- Crear e inicializar la variable **contador**
+- Crear el listener con el codigo para incrementar el contador
+
 # sysadmin-sanbox
 Configuraciones borrador de despliegue de aplicaciones
 
