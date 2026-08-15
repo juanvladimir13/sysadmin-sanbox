@@ -28,6 +28,7 @@ sudo apt install texlive-latex-extra
 sudo apt install texlive-latex-extra texstudio
 sudo apt-get install -y texlive-bibtex-extra
 sudo apt-get install -y texlive-bibtex-extra biber texlive-publishers
+sudo apt-get install -y texlive-lang-spanish
 ```
 
 ## Django admin
