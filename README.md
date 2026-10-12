@@ -116,10 +116,16 @@ sudo systemctl reload apache2
 sudo systemctl restart apache2
 ```
 
+Verificar configuraciones en settings.py
+```bash
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+```
+
 ### Comandos de iniciacion de la aplicacion
 ```bash
-export DJANGO_SETTINGS_MODULE=core_venta.settings
-python3 manage.py collectstatic --settings=core_venta.venta.settings
+export DJANGO_SETTINGS_MODULE=ventas.settings
+python3 manage.py collectstatic --settings=ventas.settings
 ```
 
 ## Pregunta
