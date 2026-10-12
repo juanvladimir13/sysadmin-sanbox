@@ -6,7 +6,7 @@
 
 2. Abrir `git bash` y copiar el codigo al servidor
 ```bash
-scp -R core_venta root@37.60.248.175:/root
+scp -r core_venta root@37.60.248.175:/root
 ```
 
 Ingresar al servidor
@@ -14,21 +14,21 @@ Ingresar al servidor
 ssh root@37.60.248.175
 ```
 
-Mover el directorio a /var/wwww/
+Mover el directorio a /var/www/
 ```bash
-sudo mv core_venta /var/wwww
+sudo mv core_venta /var/www
 ```
 
 ### Crear el entorno virtual
 
 ```bash
-cd /var/wwww/core_venta
+cd /var/www/core_venta
 python3 -m venv .venv
 ```
 
 Activar el entorno virtual
 ```bash
-.venv/bin/activate
+source .venv/bin/activate
 ```
 
 Instalar aplicaciones
@@ -61,7 +61,7 @@ sudo nano /etc/apache2/sites-available/core_venta.com.conf
 
 Contenido de virtual host
 ```apache
-<VirtualHost *:8016>
+<VirtualHost *:8013>
     #ServerName bthsanjulian.website
     #ServerAlias www.bthsanjulian.website
 
@@ -93,12 +93,16 @@ Contenido de virtual host
 
 Habilitar puerto de virtual host
 ```bash
-sudo vim /etc/apache2/ports.conf
+sudo nano /etc/apache2/ports.conf
 ```
 
 Agregar el puerto
 ```apache
-Listen 9012
+Listen 8013
+```
+Habilitar el firewall
+```bash
+sudo ufw allow 8013/tcp
 ```
 
 Habilitar el host
@@ -115,7 +119,7 @@ sudo systemctl restart apache2
 ### Comandos de iniciacion de la aplicacion
 ```bash
 export DJANGO_SETTINGS_MODULE=core_venta.settings
-python manage.py collectstatic \
+python3 manage.py collectstatic \
     --settings=exclusivogo_admin.settings
 ```
 
