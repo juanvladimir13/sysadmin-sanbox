@@ -119,8 +119,7 @@ sudo systemctl restart apache2
 ### Comandos de iniciacion de la aplicacion
 ```bash
 export DJANGO_SETTINGS_MODULE=core_venta.settings
-python3 manage.py collectstatic \
-    --settings=exclusivogo_admin.settings
+python3 manage.py collectstatic --settings=core_venta.venta.settings
 ```
 
 ## Pregunta
