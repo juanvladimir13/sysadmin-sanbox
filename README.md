@@ -1,4 +1,123 @@
 # Estructura de un documento HTML
+## Django deploy standard
+### Copiar el codigo fuente al servidor
+
+1. Ingresar al directorio superior de su proyecto
+
+2. Abrir `git bash` y copiar el codigo al servidor
+```bash
+scp -R core_venta root@37.60.248.175:/root
+```
+
+Ingresar al servidor
+```bash
+ssh root@37.60.248.175
+```
+
+Mover el directorio a /var/wwww/
+```bash
+sudo mv core_venta /var/wwww
+```
+
+### Crear el entorno virtual
+
+```bash
+cd /var/wwww/core_venta
+python3 -m venv .venv
+```
+
+Activar el entorno virtual
+```bash
+.venv/bin/activate
+```
+
+Instalar aplicaciones
+```bash
+pip install -r *.txt
+```
+
+### Configuracion de la aplicacion
+Actualizacion de permisos de carpetas
+```bash
+sudo mkdir /var/www/core_venta/logs
+sudo chown -R www-data:www-data /var/www/core_venta/logs
+sudo chmod 775 /var/www/core_venta/logs
+```
+
+### Instalacion de paquetes apache
+Instalar paquetes necesarios
+```bash
+sudo apt update
+sudo apt install apache2 libapache2-mod-wsgi-py3 python3-venv python3-pip -y
+```
+
+#### Configuacion de virtual host
+Reemplazar el nombre de **core_venta** por el nombre de su proyecto
+
+Crear virtual host
+```bash
+sudo nano /etc/apache2/sites-available/core_venta.com.conf
+```
+
+Contenido de virtual host
+```apache
+<VirtualHost *:8016>
+    #ServerName bthsanjulian.website
+    #ServerAlias www.bthsanjulian.website
+
+    Alias /static/ /var/www/core_venta/staticfiles/
+    Alias /media/ /var/www/core_venta/media/
+
+    <Directory /var/www/core_venta/staticfiles>
+        Require all granted
+    </Directory>
+
+    <Directory /var/www/core_venta/media>
+        Require all granted
+    </Directory>
+
+    <Directory /var/www/core_venta/core_venta>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+    WSGIDaemonProcess core_venta python-home=/var/www/core_venta/.venv python-path=/var/www/core_venta
+    WSGIProcessGroup core_venta
+    WSGIScriptAlias / /var/www/core_venta/core_venta/wsgi.py
+
+    ErrorLog ${APACHE_LOG_DIR}/core_venta_error.log
+    CustomLog ${APACHE_LOG_DIR}/core_venta_access.log combined
+</VirtualHost>
+```
+
+Habilitar puerto de virtual host
+```bash
+sudo vim /etc/apache2/ports.conf
+```
+
+Agregar el puerto
+```apache
+Listen 9012
+```
+
+Habilitar el host
+```bash
+sudo a2ensite core_venta.com.conf
+```
+
+Reiniciar el servidor apache
+```bash
+sudo systemctl reload apache2
+sudo systemctl restart apache2
+```
+
+### Comandos de iniciacion de la aplicacion
+```bash
+export DJANGO_SETTINGS_MODULE=core_venta.settings
+python manage.py collectstatic \
+    --settings=exclusivogo_admin.settings
+```
 
 ## Pregunta
 - Crear una carpeta con su **primer nombre** _(utilizar el alfabeto ingles)_
