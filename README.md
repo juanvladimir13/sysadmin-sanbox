@@ -84,7 +84,7 @@ Contenido de virtual host
 
     WSGIDaemonProcess core_venta python-home=/var/www/core_venta/.venv python-path=/var/www/core_venta
     WSGIProcessGroup core_venta
-    WSGIScriptAlias / /var/www/core_venta/core_venta/wsgi.py
+    WSGIScriptAlias / /var/www/core_venta/ventas/wsgi.py
 
     ErrorLog ${APACHE_LOG_DIR}/core_venta_error.log
     CustomLog ${APACHE_LOG_DIR}/core_venta_access.log combined
