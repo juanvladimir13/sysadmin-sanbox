@@ -41,7 +41,7 @@ Actualizacion de permisos de carpetas
 ```bash
 sudo mkdir /var/www/core_venta/logs
 sudo chown -R www-data:www-data /var/www/core_venta/logs
-sudo chmod 775 /var/www/core_venta/logs
+sudo chmod -R 775 /var/www/core_venta/logs
 ```
 
 ### Instalacion de paquetes apache
@@ -118,6 +118,8 @@ sudo systemctl restart apache2
 
 Verificar configuraciones en settings.py
 ```bash
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 ```
